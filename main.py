@@ -15,8 +15,7 @@ SLACK_CHANNEL = os.environ.get("SLACK_CHANNEL") # 여기에 메시지를 보낼 
 def send_slack_message(message):
     try:
         client = WebClient(token=SLACK_TOKEN)
-        client.chat_postMessage(channel=SLACK_CHANNEL, text="작동 테스트 메세지입니다.")
-        # client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
+        client.chat_postMessage(channel=SLACK_CHANNEL, text=message)
     except SlackApiError as e:
         print(f"Error sending message: {e}")
 
