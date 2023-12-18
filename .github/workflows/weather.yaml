@@ -10,11 +10,6 @@ jobs:
       - name: action code checkout
         uses: actions/checkout@v3
 
-      - name: create .env file
-        run: |
-          echo "SLACK_TOKEN=${{ secrets.SLACK_TOKEN }}" > .env
-          echo "SLACK_CHANNEL=${{ secrets.SLACK_CHANNEL }}" >> .env
-
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -26,4 +21,7 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: run main.py
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
         run: python3 main.py
