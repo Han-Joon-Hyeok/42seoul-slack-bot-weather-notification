@@ -1,4 +1,4 @@
-name: weather-bot
+name: weather-bot-test
 on:
   push: # push 이벤트 발생 시
     branches:
