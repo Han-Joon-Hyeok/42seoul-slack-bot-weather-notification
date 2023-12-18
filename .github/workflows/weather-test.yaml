@@ -5,10 +5,10 @@ on:
       - feat-github-actions-작동-테스트#1
   workflow_dispatch:
   schedule:
-   - cron: "39 13 * * 1"
+   - cron: "41 13 * * 1"
 
 jobs:
-  post_scrum_message:
+  post_weather_forecast_message:
     runs-on: ubuntu-latest
     steps:
       - name: action code checkout
