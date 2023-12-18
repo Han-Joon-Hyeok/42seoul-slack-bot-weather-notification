@@ -1,11 +1,10 @@
 name: weather-bot
 on:
-  workflow_dispatch:
   schedule:
    - cron: "00 20 * * *" # Everyday AM 5:00 KST
 
 jobs:
-  post_scrum_message:
+  post_weather_forecast_message:
     runs-on: ubuntu-latest
     steps:
       - name: action code checkout
