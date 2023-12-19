@@ -1,7 +1,8 @@
 name: weather-bot
 on:
   schedule:
-   - cron: "00 20 * * *" # Everyday AM 5:00 KST
+    # - cron: "00 20 * * *" # Everyday AM 5:00 KST
+    - cron: "17 00 * * *" # Everyday AM 9:18 KST
 
 jobs:
   post_weather_forecast_message:
