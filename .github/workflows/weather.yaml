@@ -1,8 +1,9 @@
 name: weather-bot
 on:
+  workflow_dispatch:
   schedule:
     # - cron: "00 20 * * *" # Everyday AM 5:00 KST
-    - cron: "21 00 * * *" # Everyday AM 9:18 KST
+    - cron: "24 00 * * *" # Everyday AM 9:18 KST
 
 jobs:
   post_weather_forecast_message:
