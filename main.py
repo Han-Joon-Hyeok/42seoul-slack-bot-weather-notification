@@ -21,7 +21,8 @@ def send_slack_message(message):
 def main():
     # 현재 날짜 (KST 기준)
     current_time_kst = arrow.now('Asia/Seoul')
-    date_of_today = current_time_kst.format("YYYY년 MM월 DD일")
+    date_format = "YYYY년 MM월 DD일 dddd"
+    date_of_today = current_time_kst.format(date_format, locale="ko_kr")
     
     # 메시지 제목
     header = f"*[{date_of_today} 인증 스레드]*"
