@@ -13,6 +13,20 @@ load_dotenv()
 SLACK_TOKEN = os.environ.get("SLACK_TOKEN")
 SLACK_CHANNEL = os.environ.get("SLACK_CHANNEL") # 여기에 메시지를 보낼 Slack 채널 이름을 입력하세요.
 
+STATUS_OF_SKY = {
+    '1': '맑음 ☀️',
+    '3': '구름많음 ☁️',
+    '4': '흐림 ⛅️',
+}
+
+STATUS_OF_PRECIPITATION = {
+    '0': '없음',
+    '1': '비 🌧️',
+    '2': '비/눈 🌨️',
+    '3': '눈 ❄️',
+    '4': '소나기 ☔️'
+}
+
 def send_slack_message(message):
     try:
         client = WebClient(token=SLACK_TOKEN)
@@ -31,12 +45,22 @@ def main():
 
     # 날씨 정보
     weather_msg = ""
-    response_json = weather.fetch_data_from_openweather_api()
-    if (response_json == {}):
+    sky = weather.fetch_data_from_kma(current_time_kst, '3', 'SKY', '0500')
+    precipitation = weather.fetch_data_from_kma(current_time_kst, '4', 'PTY', '0500')
+    lowest_temp_of_today = weather.fetch_data_from_kma(current_time_kst, '5', 'TMN', '0600')
+    highest_temp_of_today = weather.fetch_data_from_kma(current_time_kst, '16', 'TMX', '1500')
+
+    if (sky == None or precipitation == None or 
+        lowest_temp_of_today == None or highest_temp_of_today == None):
         weather_msg = "날씨 정보를 가져오지 못했습니다. 😢"
     else:
-        weather_data = weather.parse_weather_data(response_json)
-        weather_msg = f"오늘의 날씨: {weather_data['description']}\n- ⬇️최저 기온: {weather_data['min_temp']}°C\n- ⬆️최고 기온: {weather_data['max_temp']}°C\n- 💦습도: {weather_data['humidity']}%\n- 🌬️풍속: {weather_data['wind']}m/s\n- 🔎관측 지점: 서울 종로구"
+        weather_of_today = f"{STATUS_OF_SKY[sky]} (강수: {STATUS_OF_PRECIPITATION[precipitation]})"
+        weather_msg = (
+            f"🌏 현재 날씨: {weather_of_today}\n"
+            f"🔼 최고 기온: {highest_temp_of_today}°C\n"
+            f"🔽 최저 기온: {lowest_temp_of_today}°C\n"
+            f"🔎 관측 지점: 서울 강남구 개포2동"
+        )
 
     # 메시지 본문
     body = header + weather_msg

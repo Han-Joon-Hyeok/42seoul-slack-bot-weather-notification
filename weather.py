@@ -5,24 +5,47 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY")
+SERVICE_KEY = os.environ.get("SERVICE_KEY")
 
-lang = "kr"
-units = "metric" # 온도 표시 단위(Celsius)
+api_url = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"
 
-# 서울 종로구 좌표
-lat = "37.5683"
-lon = "126.9778"
+# 관측 위치 : 서울특별시 강남구 개포2동
+# 당일 새벽 2시에 발표된 예보를 기준으로 최저기온, 최고기온 정보를 가져옵니다.
+params = {
+    'serviceKey': SERVICE_KEY,
+    'numOfRows': '10',
+    'dataType': 'JSON',
+    'base_time': '0200',
+    'nx': '62',
+    'ny': '125',
+}
 
-api_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units={units}&lang={lang}&appid={OPENWEATHER_API_KEY}"
-
-def fetch_data_from_openweather_api():
+'''
+category: 예보 항목
+- TMN : 최저 기온 - 오전 6시 
+- TMX : 최고 기온 - 오후 3시 
+- SKY : 하늘 상태
+- PTY : 강수 형태
+'''
+def fetch_data_from_kma(current_time_kst, page_no, category, fcst_time):
     try:
-        response = requests.get(api_url)
+        date_format = "YYYYMMDD"
+        base_date = current_time_kst.format(date_format)
+        params['base_date'] = base_date
+        params['pageNo'] = page_no
+
+        response = requests.get(api_url, params=params)
         response.raise_for_status()
         data = response.json()
 
-        return data
+        items = data['response']['body']['items']['item']
+        found = next(filter(lambda x: x['category'] == category and x['fcstTime'] == fcst_time, items), None)
+
+        if (found):
+            return found['fcstValue']
+        else:
+            return None
+
     except requests.exceptions.HTTPError as errh:
         print(f"HTTP Error: {errh}")
     except requests.exceptions.ConnectionError as errc:
@@ -31,14 +54,5 @@ def fetch_data_from_openweather_api():
         print(f"Timeout Error: {errt}")
     except requests.exceptions.RequestException as err:
         print(f"Something went wrong: {err}")
-    return {}
 
-def parse_weather_data(json):
-    data = {
-        'description': json['weather'][0]['description'],
-        'min_temp': json['main']['temp_min'],
-        'max_temp': json['main']['temp_max'],
-        'humidity': json['main']['humidity'],
-        'wind': json['wind']['speed'],
-    }
-    return data
+    return None
