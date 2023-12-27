@@ -1,6 +1,6 @@
 # 📂 프로젝트 소개
 
-공공데이터포털에서 제공하는 기상청 API 를 이용하여 오늘의 날씨 정보를 매일 정해진 시간에 Slack 채널로 전송하는 Slack bot 입니다.
+공공데이터포털에서 제공하는 기상청 단기예보 조회서비스 API 를 이용하여 오늘의 날씨 정보를 매일 정해진 시간에 Slack 채널로 전송하는 Slack bot 입니다.
 
 ![introduction.png](./images/introduction.png)
 
@@ -16,7 +16,10 @@
 - [[공공데이터포털]](https://www.data.go.kr/) 에서 개인 API 인증키를 발급 받아야 합니다. 발급 후 사용 승인까지 최소 1일 정도 소요됩니다.
 - [[Slack API]](https://api.slack.com/apps) 에서 App 을 생성하고 OAuth Token 을 발급 받습니다.
 
-## 📚 라이브러리 설치
+
+## 🏠 로컬 환경 구성
+
+### 1. 📚 라이브러리 설치
 
 가상환경 설치 후 라이브러리 설치를 권장합니다.
 
@@ -39,22 +42,21 @@
 	$ pip install -r requirements.txt
    ```
 
-## 🏠 로컬 환경 구성
+### 2. `.env` 파일 생성
 
-1. `.env` 파일 생성
-   - 프로젝트 폴더 최상단에 `.env` 파일을 생성합니다.
-   - [Slack API App 페이지] - [OAuth & Permissions] - [OAuth Tokens for Your Workspace] 로 이동하여 Bot User OAuth Token 항목에서 발급 받은 토큰을 `SLACK_TOKEN` 에 입력합니다.
-   - Slack 워크스페이스의 전송하고자 하는 채널의 채널 ID 를 `SLACK_CHANNEL` 에 입력합니다.
-   - 공공데이터포털에서 발급 받은 개인 API 인증키를 `SERVICE_KEY` 에 입력합니다.
-   - 최종적으로 아래와 같은 형태로 작성합니다. (`.env.sample` 파일 참고)
+- 프로젝트 폴더 최상단에 `.env` 파일을 생성합니다.
+- [Slack API App 페이지] - [OAuth & Permissions] - [OAuth Tokens for Your Workspace] 로 이동하여 Bot User OAuth Token 항목에서 발급 받은 토큰을 `SLACK_TOKEN` 에 입력합니다.
+- Slack 워크스페이스의 전송하고자 하는 채널의 채널 ID 를 `SLACK_CHANNEL` 에 입력합니다.
+- 공공데이터포털에서 발급 받은 개인 API 인증키를 `SERVICE_KEY` 에 입력합니다.
+- 최종적으로 아래와 같은 형태로 작성합니다. (`.env.sample` 파일 참고)
 
-	```
-	SLACK_TOKEN="[Bot User OAuth Token]"
-	SLACK_CHANNEL="[Slack Channel ID]"
-	SERVICE_KEY="[공공데이터포털 개인 API 인증키]"
-	```
+```
+SLACK_TOKEN="[Bot User OAuth Token]"
+SLACK_CHANNEL="[Slack Channel ID]"
+SERVICE_KEY="[공공데이터포털 개인 API 인증키]"
+```
 
-2. 스크립트 실행
+### 3. 스크립트 실행
 	- 로컬 환경에서 테스트 목적으로 Slack 채널에 메세지를 보내고 싶은 경우 `main.py` 를 실행합니다.
 	```bash
 	python main.py
@@ -84,6 +86,8 @@
 	🔽 최저 기온: -2.0°C
 	🔎 관측 지점: 서울 강남구 개포2동
 	```
+
+- 관측 지점은 공공데이터포털 참고문서에 나와있는 위도, 경도 값을 바꿔주시면 변경 가능합니다.
 
 # 💡 기여 방법
 
