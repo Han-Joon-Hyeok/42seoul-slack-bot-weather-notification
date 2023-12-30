@@ -57,10 +57,12 @@ SERVICE_KEY="[공공데이터포털 개인 API 인증키]"
 ```
 
 ### 3. 스크립트 실행
-	- 로컬 환경에서 테스트 목적으로 Slack 채널에 메세지를 보내고 싶은 경우 `main.py` 를 실행합니다.
-	```bash
-	python main.py
-	```
+
+로컬 환경에서 테스트 목적으로 Slack 채널에 메세지를 보내고 싶은 경우 `main.py` 를 실행합니다.
+
+```bash
+python main.py
+```
 
 ## 📦 배포하기
 
